@@ -1,0 +1,6 @@
+{
+  "name": "Comunidade Hikari",
+  "description": "Comunidade premium para fãs de animes com discussões por episódios, debates, galeria de fanarts e emblemas colecionáveis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

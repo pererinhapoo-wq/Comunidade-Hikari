@@ -1,0 +1,1618 @@
+{
+  "users": [
+    {
+      "id": "usr_admin",
+      "email": "admin@hikari.community",
+      "username": "hikari_curador",
+      "displayName": "Hikari Curadoria",
+      "passwordHash": "$2b$10$o7gsCh9vNmbPFlcYacxHE.DHrCTPi.yjKquKJ8gnnvUKu2R3.c/ym",
+      "bio": "Equipe editorial e curadoria oficial da Comunidade Hikari. Apaixonados por narrativa, animação e lore de animes.",
+      "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+      "bannerUrl": "/src/assets/images/hikari_hero_banner_1792424735133.jpg",
+      "primaryBadgeId": "badge_hikari_supremo",
+      "badges": [
+        {
+          "badgeId": "badge_hikari_supremo",
+          "acquiredAt": "2026-01-01T00:00:00Z",
+          "reason": "Curador Fundador"
+        },
+        {
+          "badgeId": "badge_pioneiro_hikari",
+          "acquiredAt": "2026-01-01T00:00:00Z",
+          "reason": "Membro Pioneiro"
+        },
+        {
+          "badgeId": "badge_critico_aclamado",
+          "acquiredAt": "2026-10-19T16:27:15.139Z",
+          "reason": "Publicou 3 ou mais discussões na Comunidade Hikari"
+        }
+      ],
+      "followers": [
+        "usr_fern",
+        "usr_satoru",
+        "usr_yuki"
+      ],
+      "following": [
+        "usr_fern",
+        "usr_satoru"
+      ],
+      "blockedUsers": [],
+      "role": "admin",
+      "createdAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": "usr_fern",
+      "email": "fern@hikari.community",
+      "username": "fern_arcana",
+      "displayName": "Fern Zoltraak",
+      "passwordHash": "$2b$10$o7gsCh9vNmbPFlcYacxHE.DHrCTPi.yjKquKJ8gnnvUKu2R3.c/ym",
+      "bio": "Estudiosa de grimórios élficos e magias cotidianas. Fã número um da mestre Frieren.",
+      "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+      "bannerUrl": "/src/assets/images/anime_frieren_journey_1792424735166.jpg",
+      "primaryBadgeId": "badge_guardiao_spoilers",
+      "badges": [
+        {
+          "badgeId": "badge_estrela_guia",
+          "acquiredAt": "2026-02-10T14:30:00Z",
+          "reason": "Especialista em Frieren"
+        },
+        {
+          "badgeId": "badge_guardiao_spoilers",
+          "acquiredAt": "2026-02-12T10:00:00Z",
+          "reason": "Debates organizados"
+        },
+        {
+          "badgeId": "badge_pioneiro_hikari",
+          "acquiredAt": "2026-01-05T00:00:00Z",
+          "reason": "Membro Pioneiro"
+        }
+      ],
+      "followers": [
+        "usr_admin",
+        "usr_satoru"
+      ],
+      "following": [
+        "usr_admin"
+      ],
+      "blockedUsers": [],
+      "role": "member",
+      "createdAt": "2026-01-05T12:00:00Z",
+      "resetToken": "NRM4MJP5",
+      "resetTokenExpires": 1792429223876
+    },
+    {
+      "id": "usr_satoru",
+      "email": "satoru@hikari.community",
+      "username": "satoru_infinity",
+      "displayName": "Gojo Satoru ✦",
+      "passwordHash": "$2b$10$o7gsCh9vNmbPFlcYacxHE.DHrCTPi.yjKquKJ8gnnvUKu2R3.c/ym",
+      "bio": "Debatedor de powerscaling, limites de energia amaldiçoada e coreografias de ação em animes modernos.",
+      "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+      "bannerUrl": "/src/assets/images/anime_jujutsu_sorcerer_1792424736668.jpg",
+      "primaryBadgeId": "badge_expansao_dominio",
+      "badges": [
+        {
+          "badgeId": "badge_expansao_dominio",
+          "acquiredAt": "2026-02-15T18:00:00Z",
+          "reason": "Mestre em Debates"
+        },
+        {
+          "badgeId": "badge_pioneiro_hikari",
+          "acquiredAt": "2026-01-10T00:00:00Z",
+          "reason": "Membro Pioneiro"
+        }
+      ],
+      "followers": [
+        "usr_admin",
+        "usr_fern"
+      ],
+      "following": [
+        "usr_admin",
+        "usr_fern"
+      ],
+      "blockedUsers": [],
+      "role": "member",
+      "createdAt": "2026-01-10T16:00:00Z"
+    },
+    {
+      "id": "usr_yuki",
+      "email": "yuki@hikari.community",
+      "username": "yuki_sakura",
+      "displayName": "Yuki Ilustrações",
+      "passwordHash": "$2b$10$o7gsCh9vNmbPFlcYacxHE.DHrCTPi.yjKquKJ8gnnvUKu2R3.c/ym",
+      "bio": "Criadora de fanarts digitais inspiradas em paisagens de Makoto Shinkai e estéticas de Ufotable.",
+      "avatarUrl": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
+      "bannerUrl": "/src/assets/images/anime_sololeveling_monarch_1792424736997.jpg",
+      "primaryBadgeId": "badge_ilustrador_lendario",
+      "badges": [
+        {
+          "badgeId": "badge_ilustrador_lendario",
+          "acquiredAt": "2026-02-20T21:00:00Z",
+          "reason": "Destaque na Galeria"
+        },
+        {
+          "badgeId": "badge_pioneiro_hikari",
+          "acquiredAt": "2026-01-12T00:00:00Z",
+          "reason": "Membro Pioneiro"
+        }
+      ],
+      "followers": [
+        "usr_admin"
+      ],
+      "following": [
+        "usr_admin"
+      ],
+      "blockedUsers": [],
+      "role": "member",
+      "createdAt": "2026-01-12T09:00:00Z"
+    }
+  ],
+  "posts": [
+    {
+      "id": "post_1792427235138_1sn2",
+      "authorId": "usr_admin",
+      "author": {
+        "id": "usr_admin",
+        "username": "hikari_curador",
+        "displayName": "Hikari Curadoria",
+        "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "primaryBadge": {
+          "id": "badge_hikari_supremo",
+          "name": "Brasão Celestial Hikari",
+          "description": "A mais alta condecoração da Comunidade Hikari, forjada com energia cósmica e essência estelar.",
+          "rarity": "lendario",
+          "category": "lendaria",
+          "icon": "Sparkles",
+          "glowColor": "#A855F7",
+          "condition": "Concedido a pilares da comunidade com contribuições lendárias e impacto duradouro.",
+          "imageUrl": "/src/assets/images/badge_celestial_crest_1792424737159.jpg"
+        },
+        "role": "admin"
+      },
+      "content": "Aiii",
+      "images": [
+        "/uploads/hikari_1792427227577_g0wbvm.jpg",
+        "/uploads/hikari_1792427227579_xqgr43.jpg",
+        "/uploads/hikari_1792427227584_wa9blq.jpg",
+        "/uploads/hikari_1792427227588_gpr1oz.jpg"
+      ],
+      "category": "geral",
+      "tags": [],
+      "isSpoiler": false,
+      "likes": [
+        "usr_admin"
+      ],
+      "likesCount": 0,
+      "bookmarks": [],
+      "commentsCount": 0,
+      "createdAt": "2026-10-19T16:27:15.138Z"
+    },
+    {
+      "id": "post_1792427168638_wkrt",
+      "authorId": "usr_admin",
+      "author": {
+        "id": "usr_admin",
+        "username": "hikari_curador",
+        "displayName": "Hikari Curadoria",
+        "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "primaryBadge": {
+          "id": "badge_hikari_supremo",
+          "name": "Brasão Celestial Hikari",
+          "description": "A mais alta condecoração da Comunidade Hikari, forjada com energia cósmica e essência estelar.",
+          "rarity": "lendario",
+          "category": "lendaria",
+          "icon": "Sparkles",
+          "glowColor": "#A855F7",
+          "condition": "Concedido a pilares da comunidade com contribuições lendárias e impacto duradouro.",
+          "imageUrl": "/src/assets/images/badge_celestial_crest_1792424737159.jpg"
+        },
+        "role": "admin"
+      },
+      "content": "Oiii",
+      "images": [],
+      "animeId": "frieren",
+      "animeTitle": "Frieren: Além do Fim da Jornada",
+      "category": "geral",
+      "tags": [],
+      "isSpoiler": false,
+      "likes": [
+        "usr_admin"
+      ],
+      "likesCount": 0,
+      "bookmarks": [],
+      "commentsCount": 0,
+      "createdAt": "2026-10-19T16:26:08.638Z"
+    },
+    {
+      "id": "post_frieren_ep28",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
+        "primaryBadge": {
+          "id": "badge_estrela_guia",
+          "name": "Estrela Guia de Frieren",
+          "description": "Símbolo arcano da jornada mágica de um século, banhado pela luz da sabedoria élfica.",
+          "rarity": "epico",
+          "category": "sazonal",
+          "icon": "Wand2",
+          "glowColor": "#10B981",
+          "condition": "Publicar pelo menos 3 análises de enredo ou teorias sobre Frieren.",
+          "season": "Temporada Outono 2026"
+        },
+        "role": "member"
+      },
+      "content": "A sutileza da despedida entre Frieren e Himmel no episódio final da primeira temporada me fez chorar. Reparem como o enquadramento da flor Semiramis azul reflete o retorno ao início da viagem. O que acharam do ritmo da adaptação da Madhouse?",
+      "images": [
+        "/src/assets/images/anime_frieren_journey_1792424735166.jpg"
+      ],
+      "animeId": "frieren",
+      "animeTitle": "Frieren: Além do Fim da Jornada",
+      "episodeNumber": 28,
+      "category": "episodio",
+      "tags": [
+        "Frieren",
+        "Episódio 28",
+        "Análise",
+        "Madhouse"
+      ],
+      "isSpoiler": true,
+      "spoilerWarning": "Contém spoilers do desfecho do Exame de Mago de 1ª Classe (Ep. 28)",
+      "likes": [
+        "usr_admin",
+        "usr_satoru",
+        "usr_yuki",
+        "usr_fern"
+      ],
+      "likesCount": 3,
+      "bookmarks": [
+        "usr_admin"
+      ],
+      "commentsCount": 2,
+      "createdAt": "2026-10-18T19:30:00Z"
+    },
+    {
+      "id": "post_debate_powerscaling",
+      "authorId": "usr_satoru",
+      "author": {
+        "id": "usr_satoru",
+        "username": "satoru_infinity",
+        "displayName": "Gojo Satoru ✦",
+        "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+        "primaryBadge": {
+          "id": "badge_expansao_dominio",
+          "name": "Mestre do Vazio Imensurável",
+          "description": "Condensação de energia amaldiçoada pura em azul elétrico e infinito cósmico.",
+          "rarity": "epico",
+          "category": "evento",
+          "icon": "Zap",
+          "glowColor": "#3B82F6",
+          "condition": "Vencer ou liderar 5 debates de combate e poderes com votos da comunidade."
+        },
+        "role": "member"
+      },
+      "content": "Debate de combate direto: Considerando os limites conceituais de Vazio Imensurável versus o Relicário Malevolente no arco de Shinjuku. Quem vocês consideram que tem a condição de vitória mais consistente em um cenário 1v1 puro sem fatores externos?",
+      "images": [
+        "/src/assets/images/anime_jujutsu_sorcerer_1792424736668.jpg"
+      ],
+      "animeId": "jujutsu-kaisen",
+      "animeTitle": "Jujutsu Kaisen: Batalha de Feiticeiros",
+      "category": "debate",
+      "tags": [
+        "Debate",
+        "Powerscaling",
+        "Gojo",
+        "Sukuna",
+        "JJK"
+      ],
+      "isSpoiler": true,
+      "spoilerWarning": "Discussão detalhada sobre Expansões de Domínio avançadas",
+      "likes": [
+        "usr_admin",
+        "usr_fern"
+      ],
+      "likesCount": 2,
+      "bookmarks": [
+        "usr_yuki"
+      ],
+      "commentsCount": 1,
+      "poll": {
+        "question": "Quem possui a condição de vitória mais definitiva?",
+        "options": [
+          {
+            "id": "opt_1",
+            "text": "Gojo Satoru (Infinito & Vazio Imensurável)",
+            "votes": [
+              "usr_satoru",
+              "usr_fern"
+            ]
+          },
+          {
+            "id": "opt_2",
+            "text": "Ryomen Sukuna (Domínio Aberto & Cortes Conceituais)",
+            "votes": [
+              "usr_admin"
+            ]
+          },
+          {
+            "id": "opt_3",
+            "text": "Empate Técnico / Depende das Condições Iniciais",
+            "votes": []
+          }
+        ],
+        "totalVotes": 3
+      },
+      "createdAt": "2026-10-19T02:15:00Z"
+    },
+    {
+      "id": "post_fanart_monarch",
+      "authorId": "usr_yuki",
+      "author": {
+        "id": "usr_yuki",
+        "username": "yuki_sakura",
+        "displayName": "Yuki Ilustrações",
+        "avatarUrl": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
+        "primaryBadge": {
+          "id": "badge_ilustrador_lendario",
+          "name": "Prisma de Luz das Fanarts",
+          "description": "Emblema iridescente para ilustradores e criadores visuais de alta qualidade.",
+          "rarity": "epico",
+          "category": "contribuicao",
+          "icon": "Palette",
+          "glowColor": "#EC4899",
+          "condition": "Publicar fanarts originais na galeria que recebam destaque da comunidade."
+        },
+        "role": "member"
+      },
+      "content": "Finalizei esta ilustração dedicada ao Monarca das Sombras! Foram cerca de 18 horas de pintura digital buscando capturar a aura violeta e o manto imperial. Espero que gostem, sintam-se livres para usar como papel de parede!",
+      "images": [
+        "/src/assets/images/anime_sololeveling_monarch_1792424736997.jpg"
+      ],
+      "animeId": "solo-leveling",
+      "animeTitle": "Solo Leveling: Despertar das Sombras",
+      "category": "galeria",
+      "tags": [
+        "Fanart",
+        "SoloLeveling",
+        "Jinwoo",
+        "Ilustração",
+        "Galeria"
+      ],
+      "isSpoiler": false,
+      "likes": [
+        "usr_admin",
+        "usr_fern",
+        "usr_satoru"
+      ],
+      "likesCount": 3,
+      "bookmarks": [
+        "usr_fern"
+      ],
+      "commentsCount": 1,
+      "createdAt": "2026-10-19T06:45:00Z"
+    },
+    {
+      "id": "post_comunidade_boas_vindas",
+      "authorId": "usr_admin",
+      "author": {
+        "id": "usr_admin",
+        "username": "hikari_curador",
+        "displayName": "Hikari Curadoria",
+        "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "primaryBadge": {
+          "id": "badge_hikari_supremo",
+          "name": "Brasão Celestial Hikari",
+          "description": "A mais alta condecoração da Comunidade Hikari, forjada com energia cósmica e essência estelar.",
+          "rarity": "lendario",
+          "category": "lendaria",
+          "icon": "Sparkles",
+          "glowColor": "#A855F7",
+          "condition": "Concedido a pilares da comunidade com contribuições lendárias e impacto duradouro.",
+          "imageUrl": "/src/assets/images/badge_celestial_crest_1792424737159.jpg"
+        },
+        "role": "admin"
+      },
+      "content": "Boas-vindas oficiais à Comunidade Hikari! Este espaço foi arquitetado para fãs que buscam discussões aprofundadas, análises de episódios, teorias sólidas, artes da comunidade e emblemas colecionáveis sem ruídos de pontuações artificiais. Explore os tópicos, personalize seu perfil com seu @nick único e equipe seu emblema favorito!",
+      "images": [
+        "/src/assets/images/hikari_hero_banner_1792424735133.jpg"
+      ],
+      "category": "geral",
+      "tags": [
+        "Hikari",
+        "Comunidade",
+        "BoasVindas",
+        "Emblemas"
+      ],
+      "isSpoiler": false,
+      "likes": [
+        "usr_fern",
+        "usr_satoru",
+        "usr_yuki",
+        "usr_admin"
+      ],
+      "likesCount": 3,
+      "bookmarks": [
+        "usr_fern",
+        "usr_satoru"
+      ],
+      "commentsCount": 23,
+      "createdAt": "2026-10-19T08:00:00Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": "cmt_1",
+      "postId": "post_frieren_ep28",
+      "authorId": "usr_admin",
+      "author": {
+        "id": "usr_admin",
+        "username": "hikari_curador",
+        "displayName": "Hikari Curadoria",
+        "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "primaryBadge": {
+          "id": "badge_hikari_supremo",
+          "name": "Brasão Celestial Hikari",
+          "description": "A mais alta condecoração da Comunidade Hikari, forjada com energia cósmica e essência estelar.",
+          "rarity": "lendario",
+          "category": "lendaria",
+          "icon": "Sparkles",
+          "glowColor": "#A855F7",
+          "condition": "Concedido a pilares da comunidade com contribuições lendárias e impacto duradouro.",
+          "imageUrl": "/src/assets/images/badge_celestial_crest_1792424737159.jpg"
+        }
+      },
+      "content": "Excelente observação sobre a Semiramis. O contraste visual entre a longevidade dos elfos e a urgência mortal de Himmel é o coração dessa obra.",
+      "likes": [
+        "usr_fern"
+      ],
+      "likesCount": 1,
+      "isSpoiler": false,
+      "createdAt": "2026-10-18T20:10:00Z"
+    },
+    {
+      "id": "cmt_2",
+      "postId": "post_frieren_ep28",
+      "authorId": "usr_yuki",
+      "author": {
+        "id": "usr_yuki",
+        "username": "yuki_sakura",
+        "displayName": "Yuki Ilustrações",
+        "avatarUrl": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
+        "primaryBadge": {
+          "id": "badge_ilustrador_lendario",
+          "name": "Prisma de Luz das Fanarts",
+          "description": "Emblema iridescente para ilustradores e criadores visuais de alta qualidade.",
+          "rarity": "epico",
+          "category": "contribuicao",
+          "icon": "Palette",
+          "glowColor": "#EC4899",
+          "condition": "Publicar fanarts originais na galeria que recebam destaque da comunidade."
+        }
+      },
+      "content": "A trilha sonora do Evan Call durante esses últimos minutos eleva tudo para outro patamar!",
+      "likes": [
+        "usr_fern",
+        "usr_admin"
+      ],
+      "likesCount": 2,
+      "isSpoiler": false,
+      "createdAt": "2026-10-18T21:05:00Z"
+    },
+    {
+      "id": "cmt_3",
+      "postId": "post_fanart_monarch",
+      "authorId": "usr_satoru",
+      "author": {
+        "id": "usr_satoru",
+        "username": "satoru_infinity",
+        "displayName": "Gojo Satoru ✦",
+        "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+        "primaryBadge": {
+          "id": "badge_expansao_dominio",
+          "name": "Mestre do Vazio Imensurável",
+          "description": "Condensação de energia amaldiçoada pura em azul elétrico e infinito cósmico.",
+          "rarity": "epico",
+          "category": "evento",
+          "icon": "Zap",
+          "glowColor": "#3B82F6",
+          "condition": "Vencer ou liderar 5 debates de combate e poderes com votos da comunidade."
+        }
+      },
+      "content": "Trabalho insano na renderização da iluminação violeta da lâmina! Arte de alto nível.",
+      "likes": [
+        "usr_yuki"
+      ],
+      "likesCount": 1,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T07:15:00Z"
+    },
+    {
+      "id": "cmt_1792427424550_rom9",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_admin",
+      "author": {
+        "id": "usr_admin",
+        "username": "hikari_curador",
+        "displayName": "Hikari Curadoria",
+        "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "primaryBadge": {
+          "id": "badge_hikari_supremo",
+          "name": "Brasão Celestial Hikari",
+          "description": "A mais alta condecoração da Comunidade Hikari, forjada com energia cósmica e essência estelar.",
+          "rarity": "lendario",
+          "category": "lendaria",
+          "icon": "Sparkles",
+          "glowColor": "#A855F7",
+          "condition": "Concedido a pilares da comunidade com contribuições lendárias e impacto duradouro.",
+          "imageUrl": "/src/assets/images/badge_celestial_crest_1792424737159.jpg"
+        }
+      },
+      "content": "Oii",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:24.550Z"
+    },
+    {
+      "id": "cmt_1792427432658_w8r4",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #0",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.658Z"
+    },
+    {
+      "id": "cmt_1792427432665_oi9m",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #1",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.665Z"
+    },
+    {
+      "id": "cmt_1792427432668_d9fa",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #2",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.668Z"
+    },
+    {
+      "id": "cmt_1792427432671_22n5",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #3",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.671Z"
+    },
+    {
+      "id": "cmt_1792427432674_yf5a",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #5",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.674Z"
+    },
+    {
+      "id": "cmt_1792427432676_bm16",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #6",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.676Z"
+    },
+    {
+      "id": "cmt_1792427432677_5fhm",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #4",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.677Z"
+    },
+    {
+      "id": "cmt_1792427432679_zp2z",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #7",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.679Z"
+    },
+    {
+      "id": "cmt_1792427432682_xtp1",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #8",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.682Z"
+    },
+    {
+      "id": "cmt_1792427432683_2kpo",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #9",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.683Z"
+    },
+    {
+      "id": "cmt_1792427432686_8i9f",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #10",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.686Z"
+    },
+    {
+      "id": "cmt_1792427432688_xngx",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #11",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.688Z"
+    },
+    {
+      "id": "cmt_1792427432691_74rp",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #13",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.691Z"
+    },
+    {
+      "id": "cmt_1792427432693_aquk",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #14",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.693Z"
+    },
+    {
+      "id": "cmt_1792427432696_el3c",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #12",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.696Z"
+    },
+    {
+      "id": "cmt_1792427432699_17pi",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #15",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.699Z"
+    },
+    {
+      "id": "cmt_1792427432701_7z73",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #17",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.701Z"
+    },
+    {
+      "id": "cmt_1792427432703_jx5d",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #18",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.703Z"
+    },
+    {
+      "id": "cmt_1792427432705_gu5u",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #19",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.705Z"
+    },
+    {
+      "id": "cmt_1792427432707_fv97",
+      "postId": "post_comunidade_boas_vindas",
+      "authorId": "usr_fern",
+      "author": {
+        "id": "usr_fern",
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana",
+        "primaryBadge": {
+          "id": "badge_guardiao_spoilers",
+          "name": "Guardião da Lore",
+          "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+          "rarity": "comum",
+          "category": "contribuicao",
+          "icon": "ShieldCheck",
+          "glowColor": "#64748B",
+          "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+        }
+      },
+      "content": "Comentario concorrente #16",
+      "likes": [],
+      "likesCount": 0,
+      "isSpoiler": false,
+      "createdAt": "2026-10-19T16:30:32.707Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notif_1792427432707",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #16...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.707Z"
+    },
+    {
+      "id": "notif_1792427432706",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #19...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.706Z"
+    },
+    {
+      "id": "notif_1792427432703",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #18...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.703Z"
+    },
+    {
+      "id": "notif_1792427432702",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #17...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.702Z"
+    },
+    {
+      "id": "notif_1792427432700",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #15...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.700Z"
+    },
+    {
+      "id": "notif_1792427432696",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #12...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.696Z"
+    },
+    {
+      "id": "notif_1792427432693",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #14...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.693Z"
+    },
+    {
+      "id": "notif_1792427432691",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #13...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.691Z"
+    },
+    {
+      "id": "notif_1792427432689",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #11...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.689Z"
+    },
+    {
+      "id": "notif_1792427432686",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #10...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.686Z"
+    },
+    {
+      "id": "notif_1792427432684",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #9...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.684Z"
+    },
+    {
+      "id": "notif_1792427432682",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #8...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.682Z"
+    },
+    {
+      "id": "notif_1792427432680",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #7...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.680Z"
+    },
+    {
+      "id": "notif_1792427432678",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #4...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.678Z"
+    },
+    {
+      "id": "notif_1792427432676",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #6...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.676Z"
+    },
+    {
+      "id": "notif_1792427432675",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #5...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.675Z"
+    },
+    {
+      "id": "notif_1792427432672",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #3...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.672Z"
+    },
+    {
+      "id": "notif_1792427432669",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #2...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.669Z"
+    },
+    {
+      "id": "notif_1792427432665",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #1...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.665Z"
+    },
+    {
+      "id": "notif_1792427432659",
+      "recipientId": "usr_admin",
+      "senderId": "usr_fern",
+      "sender": {
+        "username": "fern_arcana",
+        "displayName": "Fern Zoltraak",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=fern_arcana"
+      },
+      "type": "comment",
+      "title": "Novo comentário",
+      "message": "Fern Zoltraak comentou na sua publicação: \"Comentario concorrente #0...\"",
+      "postId": "post_comunidade_boas_vindas",
+      "read": false,
+      "createdAt": "2026-10-19T16:30:32.659Z"
+    },
+    {
+      "id": "notif_1792427235139_ebb6o",
+      "recipientId": "usr_admin",
+      "type": "badge",
+      "title": "Emblema Desbloqueado!",
+      "message": "Você conquistou o emblema \"Pena de Cristal Crítica\"!",
+      "badgeId": "badge_critico_aclamado",
+      "badge": {
+        "id": "badge_critico_aclamado",
+        "name": "Pena de Cristal Crítica",
+        "description": "Prata polida concedida aos autores de resenhas detalhadas e análises cinematográficas.",
+        "rarity": "raro",
+        "category": "contribuicao",
+        "icon": "Feather",
+        "glowColor": "#E2E8F0",
+        "condition": "Ter resenhas com mais de 20 salvamentos por outros membros."
+      },
+      "read": true,
+      "createdAt": "2026-10-19T16:27:15.139Z"
+    },
+    {
+      "id": "notif_1",
+      "recipientId": "usr_fern",
+      "senderId": "usr_admin",
+      "sender": {
+        "username": "hikari_curador",
+        "displayName": "Hikari Curadoria",
+        "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
+      },
+      "type": "like",
+      "title": "Curtida na publicação",
+      "message": "curtiu sua publicação sobre Frieren Episódio 28",
+      "postId": "post_frieren_ep28",
+      "read": true,
+      "createdAt": "2026-10-18T20:15:00Z"
+    },
+    {
+      "id": "notif_2",
+      "recipientId": "usr_fern",
+      "type": "badge",
+      "title": "Emblema Desbloqueado",
+      "message": "Você conquistou o emblema Estrela Guia de Frieren!",
+      "badgeId": "badge_estrela_guia",
+      "badge": {
+        "id": "badge_estrela_guia",
+        "name": "Estrela Guia de Frieren",
+        "description": "Símbolo arcano da jornada mágica de um século, banhado pela luz da sabedoria élfica.",
+        "rarity": "epico",
+        "category": "sazonal",
+        "icon": "Wand2",
+        "glowColor": "#10B981",
+        "condition": "Publicar pelo menos 3 análises de enredo ou teorias sobre Frieren.",
+        "season": "Temporada Outono 2026"
+      },
+      "read": true,
+      "createdAt": "2026-10-18T19:00:00Z"
+    }
+  ],
+  "badges": [
+    {
+      "id": "badge_hikari_supremo",
+      "name": "Brasão Celestial Hikari",
+      "description": "A mais alta condecoração da Comunidade Hikari, forjada com energia cósmica e essência estelar.",
+      "rarity": "lendario",
+      "category": "lendaria",
+      "icon": "Sparkles",
+      "glowColor": "#A855F7",
+      "condition": "Concedido a pilares da comunidade com contribuições lendárias e impacto duradouro.",
+      "imageUrl": "/src/assets/images/badge_celestial_crest_1792424737159.jpg"
+    },
+    {
+      "id": "badge_estrela_guia",
+      "name": "Estrela Guia de Frieren",
+      "description": "Símbolo arcano da jornada mágica de um século, banhado pela luz da sabedoria élfica.",
+      "rarity": "epico",
+      "category": "sazonal",
+      "icon": "Wand2",
+      "glowColor": "#10B981",
+      "condition": "Publicar pelo menos 3 análises de enredo ou teorias sobre Frieren.",
+      "season": "Temporada Outono 2026"
+    },
+    {
+      "id": "badge_expansao_dominio",
+      "name": "Mestre do Vazio Imensurável",
+      "description": "Condensação de energia amaldiçoada pura em azul elétrico e infinito cósmico.",
+      "rarity": "epico",
+      "category": "evento",
+      "icon": "Zap",
+      "glowColor": "#3B82F6",
+      "condition": "Vencer ou liderar 5 debates de combate e poderes com votos da comunidade."
+    },
+    {
+      "id": "badge_monarca_sombras",
+      "name": "Selo do Monarca das Sombras",
+      "description": "Invocação abissal de pura autoridade imperial, ressoando com o despertar do rei.",
+      "rarity": "lendario",
+      "category": "lendaria",
+      "icon": "Shield",
+      "glowColor": "#9333EA",
+      "condition": "Colecionador de discussões épicas e membro de honra das Sombras."
+    },
+    {
+      "id": "badge_pioneiro_hikari",
+      "name": "Chama Pioneira Hikari",
+      "description": "Chama safira concedida aos membros pioneiros que inauguraram a nova era da Comunidade Hikari.",
+      "rarity": "raro",
+      "category": "apoio",
+      "icon": "Flame",
+      "glowColor": "#06B6D4",
+      "condition": "Conta criada durante a fase fundadora da Comunidade Hikari."
+    },
+    {
+      "id": "badge_critico_aclamado",
+      "name": "Pena de Cristal Crítica",
+      "description": "Prata polida concedida aos autores de resenhas detalhadas e análises cinematográficas.",
+      "rarity": "raro",
+      "category": "contribuicao",
+      "icon": "Feather",
+      "glowColor": "#E2E8F0",
+      "condition": "Ter resenhas com mais de 20 salvamentos por outros membros."
+    },
+    {
+      "id": "badge_guardiao_spoilers",
+      "name": "Guardião da Lore",
+      "description": "Selo de honra por manter debates civilizados e proteger novatos com marcação exemplar de spoilers.",
+      "rarity": "comum",
+      "category": "contribuicao",
+      "icon": "ShieldCheck",
+      "glowColor": "#64748B",
+      "condition": "Publicar discussões ativas com tags de spoiler devidamente configuradas."
+    },
+    {
+      "id": "badge_ilustrador_lendario",
+      "name": "Prisma de Luz das Fanarts",
+      "description": "Emblema iridescente para ilustradores e criadores visuais de alta qualidade.",
+      "rarity": "epico",
+      "category": "contribuicao",
+      "icon": "Palette",
+      "glowColor": "#EC4899",
+      "condition": "Publicar fanarts originais na galeria que recebam destaque da comunidade."
+    }
+  ],
+  "animes": [
+    {
+      "id": "frieren",
+      "title": "Frieren: Além do Fim da Jornada",
+      "japaneseTitle": "葬送のフリーレン (Sousou no Frieren)",
+      "synopsis": "A maga elfa Frieren e seus corajosos companheiros aventureiros derrotaram o Rei Demônio e trouxeram paz à terra. Mas agora, décadas depois, Frieren empreende uma nova jornada para compreender a efemeridade humana.",
+      "coverUrl": "/src/assets/images/anime_frieren_journey_1792424735166.jpg",
+      "bannerUrl": "/src/assets/images/hikari_hero_banner_1792424735133.jpg",
+      "episodesCount": 28,
+      "genres": [
+        "Fantasia",
+        "Aventura",
+        "Drama",
+        "Magia"
+      ],
+      "score": "9.38",
+      "discussionsCount": 142,
+      "year": 2024,
+      "status": "Completo"
+    },
+    {
+      "id": "jujutsu-kaisen",
+      "title": "Jujutsu Kaisen: Batalha de Feiticeiros",
+      "japaneseTitle": "呪術廻戦 (Jujutsu Kaisen)",
+      "synopsis": "Em um mundo onde sentimentos negativos humanos se transformam em Maldições mortais, Yuji Itadori engole o dedo do Rei das Maldições e ingressa na Escola Técnica de Jujutsu de Tóquio.",
+      "coverUrl": "/src/assets/images/anime_jujutsu_sorcerer_1792424736668.jpg",
+      "bannerUrl": "/src/assets/images/hikari_hero_banner_1792424735133.jpg",
+      "episodesCount": 47,
+      "genres": [
+        "Ação",
+        "Sobrenatural",
+        "Fantasia Sombria"
+      ],
+      "score": "8.85",
+      "discussionsCount": 215,
+      "year": 2023,
+      "status": "Em exibição"
+    },
+    {
+      "id": "solo-leveling",
+      "title": "Solo Leveling: Despertar das Sombras",
+      "japaneseTitle": "俺だけレベルアップな件 (Ore dake Level Up na Ken)",
+      "synopsis": "Sung Jin-woo, conhecido como o caçador mais fraco da humanidade, recebe uma oportunidade única em uma masmorra dupla: uma interface misteriosa que lhe permite subir de nível infinitamente.",
+      "coverUrl": "/src/assets/images/anime_sololeveling_monarch_1792424736997.jpg",
+      "bannerUrl": "/src/assets/images/hikari_hero_banner_1792424735133.jpg",
+      "episodesCount": 24,
+      "genres": [
+        "Ação",
+        "Fantasia",
+        "Aventura"
+      ],
+      "score": "8.54",
+      "discussionsCount": 178,
+      "year": 2024,
+      "status": "Em exibição"
+    },
+    {
+      "id": "attack-on-titan",
+      "title": "Attack on Titan: Shingeki no Kyojin",
+      "japaneseTitle": "進撃の巨人 (Shingeki no Kyojin)",
+      "synopsis": "A humanidade vive cercada por muralhas gigantescas para se proteger de titãs devoradores. Eren Yeager jura exterminar todos os titãs após a destruição de sua cidade natal.",
+      "coverUrl": "/src/assets/images/anime_sololeveling_monarch_1792424736997.jpg",
+      "bannerUrl": "/src/assets/images/hikari_hero_banner_1792424735133.jpg",
+      "episodesCount": 89,
+      "genres": [
+        "Ação",
+        "Mistério",
+        "Drama Militar"
+      ],
+      "score": "9.08",
+      "discussionsCount": 320,
+      "year": 2023,
+      "status": "Completo"
+    }
+  ],
+  "reports": []
+}
