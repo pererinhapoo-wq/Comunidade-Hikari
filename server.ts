@@ -5,8 +5,8 @@ import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import multer from 'multer';
-import { db, DBUser } from './server/db.ts';
-import { Post, Comment, AppNotification, ReportItem } from './src/types/index.ts';
+import { db, DBUser, DEFAULT_NOTIFICATION_PREFERENCES, isNotificationEnabled } from './server/db.ts';
+import { Post, Comment, AppNotification, ReportItem, NotificationPreferences } from './src/types/index.ts';
 
 const app = express();
 const PORT = 3000;
@@ -486,6 +486,81 @@ app.post('/api/auth/reset-password', resetPasswordRateLimiter, (req: Request, re
 // 2. USER & PROFILE ROUTES
 // ==========================================
 
+// Real member search
+app.get('/api/users/search', optionalAuth, (req: AuthRequest, res: Response) => {
+  const rawQ = req.query.q;
+  if (typeof rawQ !== 'string' || !rawQ.trim()) {
+    res.json({ users: [] });
+    return;
+  }
+
+  const query = rawQ.trim().replace(/^@/, '').toLowerCase();
+  if (query.length > 50) {
+    res.status(400).json({ error: 'A consulta de busca deve ter no máximo 50 caracteres.' });
+    return;
+  }
+
+  const viewerId = req.user?.id;
+  const blocked = new Set(req.user?.blockedUsers || []);
+
+  const users = db.data.users
+    .filter(candidate => candidate.id !== viewerId && !blocked.has(candidate.id))
+    .filter(candidate => {
+      if (viewerId && (candidate.blockedUsers || []).includes(viewerId)) {
+        return false;
+      }
+      const uMatch = candidate.username.toLowerCase().includes(query);
+      const dMatch = candidate.displayName.toLowerCase().includes(query);
+      return uMatch || dMatch;
+    })
+    .slice(0, 30)
+    .map(candidate => db.toPublicProfile(candidate, viewerId));
+
+  res.json({ users });
+});
+
+// Member relations (followers / following)
+app.get('/api/users/:userId/relations', optionalAuth, (req: AuthRequest, res: Response) => {
+  const targetId = req.params.userId;
+  const target = db.findUserById(targetId) || db.findUserByUsername(targetId);
+
+  if (!target) {
+    res.status(404).json({ error: 'Membro não encontrado.' });
+    return;
+  }
+
+  const rawType = req.query.type;
+  if (rawType && rawType !== 'followers' && rawType !== 'following') {
+    res.status(400).json({ error: "O parâmetro type deve ser 'followers' ou 'following'." });
+    return;
+  }
+  const relationType: 'followers' | 'following' = rawType === 'following' ? 'following' : 'followers';
+
+  const viewerId = req.user?.id;
+  const viewerBlocked = viewerId
+    ? (target.blockedUsers || []).includes(viewerId) || (req.user?.blockedUsers || []).includes(target.id)
+    : false;
+
+  if (viewerBlocked) {
+    res.json({ users: [], type: relationType });
+    return;
+  }
+
+  const ids = relationType === 'followers' ? (target.followers || []) : (target.following || []);
+  const blockedSet = new Set(req.user?.blockedUsers || []);
+
+  const users = ids
+    .slice(0, 50)
+    .map(id => db.findUserById(id))
+    .filter((candidate): candidate is DBUser => Boolean(candidate))
+    .filter(candidate => !blockedSet.has(candidate.id))
+    // Respect blocks in both directions for every listed relation member.
+    .filter(candidate => !viewerId || !(candidate.blockedUsers || []).includes(viewerId))
+    .map(candidate => db.toPublicProfile(candidate, viewerId));
+
+  res.json({ users, type: relationType });
+});
+
 // Get public profile by @nick
 app.get('/api/users/:username', optionalAuth, (req: AuthRequest, res: Response) => {
   const user = db.findUserByUsername(req.params.username);
@@ -499,7 +574,7 @@ app.get('/api/users/:username', optionalAuth, (req: AuthRequest, res: Response) 
 // Update Profile
 app.put('/api/users/profile', authenticateToken, (req: AuthRequest, res: Response) => {
   if (!req.user) return;
-  const { displayName, bio, avatarUrl, bannerUrl } = req.body;
+  const { displayName, bio, avatarUrl, bannerUrl, favoriteAnimeIds } = req.body;
 
   const updates: Partial<DBUser> = {};
   if (displayName && typeof displayName === 'string' && displayName.trim().length <= 40) {
@@ -513,6 +588,12 @@ app.put('/api/users/profile', authenticateToken, (req: AuthRequest, res: Respons
   }
   if (bannerUrl && typeof bannerUrl === 'string') {
     updates.bannerUrl = bannerUrl;
+  }
+  if (Array.isArray(favoriteAnimeIds)) {
+    const validAnimeIds = [...new Set(
+      favoriteAnimeIds.filter((id): id is string => typeof id === 'string' && Boolean(db.findAnimeById(id)))
+    )].slice(0, 12);
+    updates.favoriteAnimeIds = validAnimeIds;
   }
 
   const updated = db.updateUser(req.user.id, updates);
@@ -569,22 +650,25 @@ app.post('/api/users/:id/follow', authenticateToken, (req: AuthRequest, res: Res
     target.followers.push(currentUserId);
     req.user.following.push(targetId);
 
-    // Create notification
-    db.createNotification({
-      id: `notif_${Date.now()}`,
-      recipientId: target.id,
-      senderId: req.user.id,
-      sender: {
-        username: req.user.username,
-        displayName: req.user.displayName,
-        avatarUrl: req.user.avatarUrl
-      },
-      type: 'follow',
-      title: 'Novo Seguidor',
-      message: `${req.user.displayName} começou a seguir você!`,
-      read: false,
-      createdAt: new Date().toISOString()
-    });
+    // Create notification if recipient has enabled follow notifications
+    if (isNotificationEnabled(target.id, 'follows')) {
+      const entropy = crypto.randomBytes(4).toString('hex');
+      db.createNotification({
+        id: `notif_${Date.now()}_${entropy}`,
+        recipientId: target.id,
+        senderId: req.user.id,
+        sender: {
+          username: req.user.username,
+          displayName: req.user.displayName,
+          avatarUrl: req.user.avatarUrl
+        },
+        type: 'follow',
+        title: 'Novo Seguidor',
+        message: `${req.user.displayName} começou a seguir você!`,
+        read: false,
+        createdAt: new Date().toISOString()
+      });
+    }
   }
 
   db.save();
@@ -691,7 +775,8 @@ app.post('/api/posts', authenticateToken, (req: AuthRequest, res: Response) => {
     };
   }
 
-  const postId = `post_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+  const postEntropy = crypto.randomBytes(4).toString('hex');
+  const postId = `post_${Date.now()}_${postEntropy}`;
   const authorBadge = req.user.primaryBadgeId ? db.findBadgeById(req.user.primaryBadgeId) : undefined;
 
   const newPost: Post = {
@@ -799,10 +884,11 @@ app.post('/api/posts/:id/like', authenticateToken, (req: AuthRequest, res: Respo
   } else {
     post.likes.push(currentUserId);
 
-    // Notify author if not self
-    if (post.authorId !== currentUserId) {
+    // Notify author if not self and likes notifications are enabled
+    if (post.authorId !== currentUserId && isNotificationEnabled(post.authorId, 'likes')) {
+      const entropy = crypto.randomBytes(4).toString('hex');
       db.createNotification({
-        id: `notif_${Date.now()}`,
+        id: `notif_${Date.now()}_${entropy}`,
         recipientId: post.authorId,
         senderId: currentUserId,
         sender: {
@@ -897,7 +983,7 @@ app.get('/api/posts/:postId/comments', optionalAuth, (req: AuthRequest, res: Res
 // Add comment
 app.post('/api/posts/:postId/comments', authenticateToken, (req: AuthRequest, res: Response) => {
   if (!req.user) return;
-  const { content, isSpoiler = false, parentCommentId } = req.body;
+  const { content, isSpoiler = false, parentCommentId, imageUrl } = req.body;
 
   if (!content || !content.trim()) {
     res.status(400).json({ error: 'O comentário não pode ficar vazio.' });
@@ -910,8 +996,21 @@ app.post('/api/posts/:postId/comments', authenticateToken, (req: AuthRequest, re
     return;
   }
 
-  const commentId = `cmt_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+  const normalizedParentId = typeof parentCommentId === 'string' && parentCommentId.trim() ? parentCommentId.trim() : undefined;
+  let parentComment: Comment | undefined;
+  if (normalizedParentId) {
+    parentComment = db.findCommentById(normalizedParentId);
+    if (!parentComment || parentComment.postId !== post.id) {
+      res.status(400).json({ error: 'O comentário respondido não pertence a esta publicação.' });
+      return;
+    }
+  }
+
+  const commentEntropy = crypto.randomBytes(4).toString('hex');
+  const commentId = `cmt_${Date.now()}_${commentEntropy}`;
   const authorBadge = req.user.primaryBadgeId ? db.findBadgeById(req.user.primaryBadgeId) : undefined;
+
+  const safeImageUrl = typeof imageUrl === 'string' && imageUrl.trim() ? imageUrl.trim() : undefined;
 
   const newComment: Comment = {
     id: commentId,
@@ -925,7 +1024,8 @@ app.post('/api/posts/:postId/comments', authenticateToken, (req: AuthRequest, re
       primaryBadge: authorBadge
     },
     content: content.trim(),
-    parentCommentId: parentCommentId || undefined,
+    imageUrl: safeImageUrl,
+    parentCommentId: normalizedParentId,
     likes: [],
     likesCount: 0,
     isSpoiler: Boolean(isSpoiler),
@@ -934,24 +1034,73 @@ app.post('/api/posts/:postId/comments', authenticateToken, (req: AuthRequest, re
 
   db.createComment(newComment);
 
-  // Notify post author
-  if (post.authorId !== req.user.id) {
-    db.createNotification({
-      id: `notif_${Date.now()}`,
-      recipientId: post.authorId,
-      senderId: req.user.id,
-      sender: {
-        username: req.user.username,
-        displayName: req.user.displayName,
-        avatarUrl: req.user.avatarUrl
-      },
-      type: 'comment',
-      title: 'Novo comentário',
-      message: `${req.user.displayName} comentou na sua publicação: "${content.slice(0, 50)}..."`,
-      postId: post.id,
-      read: false,
-      createdAt: new Date().toISOString()
-    });
+  const cleanContent = content.trim();
+  const preview = cleanContent.length > 50 ? `${cleanContent.slice(0, 50)}...` : cleanContent;
+
+  // Handle notifications for replies and comments respecting user preferences
+  if (parentComment) {
+    // 1. Notify parent comment author if not self and replies notifications are enabled
+    if (parentComment.authorId !== req.user.id && isNotificationEnabled(parentComment.authorId, 'replies')) {
+      const entropy = crypto.randomBytes(4).toString('hex');
+      db.createNotification({
+        id: `notif_${Date.now()}_${entropy}`,
+        recipientId: parentComment.authorId,
+        senderId: req.user.id,
+        sender: {
+          username: req.user.username,
+          displayName: req.user.displayName,
+          avatarUrl: req.user.avatarUrl
+        },
+        type: 'reply',
+        title: 'Nova resposta',
+        message: `${req.user.displayName} respondeu ao seu comentário: "${preview}"`,
+        postId: post.id,
+        read: false,
+        createdAt: new Date().toISOString()
+      });
+    }
+
+    // 2. Notify post author as well if post author is not self and not the parent comment author (avoids duplication)
+    if (post.authorId !== req.user.id && post.authorId !== parentComment.authorId && isNotificationEnabled(post.authorId, 'comments')) {
+      const entropy = crypto.randomBytes(4).toString('hex');
+      db.createNotification({
+        id: `notif_${Date.now()}_${entropy}`,
+        recipientId: post.authorId,
+        senderId: req.user.id,
+        sender: {
+          username: req.user.username,
+          displayName: req.user.displayName,
+          avatarUrl: req.user.avatarUrl
+        },
+        type: 'comment',
+        title: 'Novo comentário',
+        message: `${req.user.displayName} comentou na sua publicação: "${preview}"`,
+        postId: post.id,
+        read: false,
+        createdAt: new Date().toISOString()
+      });
+    }
+  } else {
+    // Top-level comment: notify post author if not self and comments notifications are enabled
+    if (post.authorId !== req.user.id && isNotificationEnabled(post.authorId, 'comments')) {
+      const entropy = crypto.randomBytes(4).toString('hex');
+      db.createNotification({
+        id: `notif_${Date.now()}_${entropy}`,
+        recipientId: post.authorId,
+        senderId: req.user.id,
+        sender: {
+          username: req.user.username,
+          displayName: req.user.displayName,
+          avatarUrl: req.user.avatarUrl
+        },
+        type: 'comment',
+        title: 'Novo comentário',
+        message: `${req.user.displayName} comentou na sua publicação: "${preview}"`,
+        postId: post.id,
+        read: false,
+        createdAt: new Date().toISOString()
+      });
+    }
   }
 
   res.status(201).json({ comment: newComment });
@@ -992,6 +1141,27 @@ app.post('/api/comments/:id/like', authenticateToken, (req: AuthRequest, res: Re
     comment.likes = comment.likes.filter(id => id !== currentUserId);
   } else {
     comment.likes.push(currentUserId);
+
+    // Notify comment author if not self and likes notifications are enabled
+    if (comment.authorId !== currentUserId && isNotificationEnabled(comment.authorId, 'likes')) {
+      const entropy = crypto.randomBytes(4).toString('hex');
+      db.createNotification({
+        id: `notif_${Date.now()}_${entropy}`,
+        recipientId: comment.authorId,
+        senderId: currentUserId,
+        sender: {
+          username: req.user.username,
+          displayName: req.user.displayName,
+          avatarUrl: req.user.avatarUrl
+        },
+        type: 'like',
+        title: 'Curtida recebida',
+        message: `${req.user.displayName} curtiu seu comentário.`,
+        postId: comment.postId,
+        read: false,
+        createdAt: new Date().toISOString()
+      });
+    }
   }
 
   db.save();
@@ -1053,6 +1223,71 @@ app.put('/api/notifications/read-all', authenticateToken, (req: AuthRequest, res
   if (!req.user) return;
   db.markAllNotificationsAsRead(req.user.id);
   res.json({ success: true });
+});
+
+// Get notification preferences
+app.get('/api/notification-preferences', authenticateToken, (req: AuthRequest, res: Response) => {
+  if (!req.user) return;
+  const preferences: NotificationPreferences = {
+    ...DEFAULT_NOTIFICATION_PREFERENCES,
+    ...(req.user.notificationPreferences || {})
+  };
+  res.json({ preferences });
+});
+
+// Update notification preferences
+app.put('/api/notification-preferences', authenticateToken, (req: AuthRequest, res: Response) => {
+  if (!req.user) return;
+  const body = req.body;
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    res.status(400).json({ error: 'Corpo da requisição inválido.' });
+    return;
+  }
+
+  const validKeys: Array<keyof NotificationPreferences> = [
+    'likes',
+    'comments',
+    'replies',
+    'follows',
+    'badges',
+    'mentions'
+  ];
+
+  // Strictly validate all fields provided in the body
+  for (const [key, value] of Object.entries(body)) {
+    if (validKeys.includes(key as keyof NotificationPreferences)) {
+      if (typeof value !== 'boolean') {
+        res.status(400).json({ error: `O campo '${key}' deve ser um valor booleano.` });
+        return;
+      }
+    } else {
+      res.status(400).json({ error: `Campo desconhecido '${key}' nas preferências de notificação.` });
+      return;
+    }
+  }
+
+  const currentPrefs: NotificationPreferences = {
+    ...DEFAULT_NOTIFICATION_PREFERENCES,
+    ...(req.user.notificationPreferences || {})
+  };
+
+  const updatedPrefs: NotificationPreferences = { ...currentPrefs };
+  for (const key of validKeys) {
+    if (typeof body[key] === 'boolean') {
+      updatedPrefs[key] = body[key];
+    }
+  }
+
+  const updatedUser = db.updateUser(req.user.id, {
+    notificationPreferences: updatedPrefs
+  });
+
+  if (!updatedUser) {
+    res.status(500).json({ error: 'Erro ao salvar preferências de notificação.' });
+    return;
+  }
+
+  res.json({ preferences: updatedPrefs });
 });
 
 // ==========================================

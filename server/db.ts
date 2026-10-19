@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
-import { Badge, Anime, Post, Comment, AppNotification, ReportItem, UserProfile } from '../src/types';
+import { Badge, Anime, Post, Comment, AppNotification, ReportItem, UserProfile, NotificationPreferences } from '../src/types';
 
 export interface DBUser {
   id: string;
@@ -13,11 +13,13 @@ export interface DBUser {
   bio: string;
   avatarUrl: string;
   bannerUrl?: string;
+  favoriteAnimeIds?: string[];
   primaryBadgeId?: string;
   badges: Array<{ badgeId: string; acquiredAt: string; reason: string }>;
   followers: string[];
   following: string[];
   blockedUsers: string[];
+  notificationPreferences?: NotificationPreferences;
   role: 'member' | 'moderator' | 'admin';
   createdAt: string;
   resetToken?: string;
@@ -40,6 +42,25 @@ const DB_FILE = path.resolve(DATA_DIR, 'hikari.json');
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+export const DEFAULT_NOTIFICATION_PREFERENCES: NotificationPreferences = {
+  likes: true,
+  comments: true,
+  replies: true,
+  follows: true,
+  badges: true,
+  mentions: true,
+};
+
+export function isNotificationEnabled(userId: string, key: keyof NotificationPreferences): boolean {
+  const user = db.findUserById(userId);
+  if (!user) return false;
+  const prefs: NotificationPreferences = {
+    ...DEFAULT_NOTIFICATION_PREFERENCES,
+    ...(user.notificationPreferences || {})
+  };
+  return prefs[key] === true;
 }
 
 export const INITIAL_BADGES: Badge[] = [
@@ -567,6 +588,7 @@ export class Database {
       bio: user.bio,
       avatarUrl: user.avatarUrl,
       bannerUrl: user.bannerUrl,
+      favoriteAnimeIds: user.favoriteAnimeIds || [],
       primaryBadgeId: user.primaryBadgeId,
       primaryBadge,
       badges: user.badges || [],
@@ -828,19 +850,21 @@ export class Database {
       user.primaryBadgeId = badgeId;
     }
 
-    // Create notification
-    const entropy = crypto.randomBytes(4).toString('hex');
-    this.createNotification({
-      id: `notif_${Date.now()}_${entropy}`,
-      recipientId: userId,
-      type: 'badge',
-      title: 'Emblema Desbloqueado!',
-      message: `Você conquistou o emblema "${badge.name}"!`,
-      badgeId,
-      badge,
-      read: false,
-      createdAt: new Date().toISOString()
-    });
+    // Create notification if enabled
+    if (isNotificationEnabled(userId, 'badges')) {
+      const entropy = crypto.randomBytes(4).toString('hex');
+      this.createNotification({
+        id: `notif_${Date.now()}_${entropy}`,
+        recipientId: userId,
+        type: 'badge',
+        title: 'Emblema Desbloqueado!',
+        message: `Você conquistou o emblema "${badge.name}"!`,
+        badgeId,
+        badge,
+        read: false,
+        createdAt: new Date().toISOString()
+      });
+    }
 
     this.save();
     return true;

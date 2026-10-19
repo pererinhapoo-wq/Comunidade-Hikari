@@ -28,6 +28,8 @@ export interface UserProfile {
   bio: string;
   avatarUrl: string;
   bannerUrl?: string;
+  /** IDs of anime explicitly saved as favorites by the profile owner. */
+  favoriteAnimeIds?: string[];
   primaryBadgeId?: string;
   primaryBadge?: Badge;
   badges: EarnedBadge[];
@@ -108,6 +110,8 @@ export interface Comment {
     primaryBadge?: Badge;
   };
   content: string;
+  /** Optional URL returned by the Community upload endpoint for an image/GIF attachment. */
+  imageUrl?: string;
   parentCommentId?: string;
   likes: string[];
   likesCount: number;
@@ -117,6 +121,16 @@ export interface Comment {
 }
 
 export type NotificationType = 'like' | 'comment' | 'reply' | 'follow' | 'badge' | 'mention';
+
+/** Per-account notification settings. Defaults are applied by the backend in Stage B. */
+export interface NotificationPreferences {
+  likes: boolean;
+  comments: boolean;
+  replies: boolean;
+  follows: boolean;
+  badges: boolean;
+  mentions: boolean;
+}
 
 export interface AppNotification {
   id: string;

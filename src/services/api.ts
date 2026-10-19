@@ -1,4 +1,4 @@
-import { Post, Comment, AppNotification, Badge, Anime, UserProfile } from '../types';
+import { Post, Comment, AppNotification, Badge, Anime, UserProfile, NotificationPreferences } from '../types';
 
 const TOKEN_KEY = 'hikari_auth_token';
 
@@ -72,7 +72,14 @@ export const api = {
   getUserProfile: (username: string) =>
     request<{ profile: UserProfile }>(`/api/users/${encodeURIComponent(username)}`),
 
-  updateProfile: (payload: { displayName?: string; bio?: string; avatarUrl?: string; bannerUrl?: string }) =>
+  // Stage A contracts; matching backend routes are added in Stage B.
+  searchUsers: (query: string) =>
+    request<{ users: UserProfile[] }>(`/api/users/search?q=${encodeURIComponent(query.trim())}`),
+
+  getUserRelations: (userId: string, type: 'followers' | 'following') =>
+    request<{ users: UserProfile[]; type: 'followers' | 'following' }>(`/api/users/${encodeURIComponent(userId)}/relations?type=${type}`),
+
+  updateProfile: (payload: { displayName?: string; bio?: string; avatarUrl?: string; bannerUrl?: string; favoriteAnimeIds?: string[] }) =>
     request<{ profile: UserProfile }>('/api/users/profile', {
       method: 'PUT',
       body: JSON.stringify(payload)
@@ -164,7 +171,7 @@ export const api = {
   getComments: (postId: string) =>
     request<{ comments: Comment[] }>(`/api/posts/${postId}/comments`),
 
-  createComment: (postId: string, payload: { content: string; isSpoiler?: boolean; parentCommentId?: string }) =>
+  createComment: (postId: string, payload: { content: string; imageUrl?: string; isSpoiler?: boolean; parentCommentId?: string }) =>
     request<{ comment: Comment }>(`/api/posts/${postId}/comments`, {
       method: 'POST',
       body: JSON.stringify(payload)
@@ -201,6 +208,15 @@ export const api = {
   markAllNotificationsRead: () =>
     request<{ success: boolean }>('/api/notifications/read-all', {
       method: 'PUT'
+    }),
+
+  getNotificationPreferences: () =>
+    request<{ preferences: NotificationPreferences }>('/api/notification-preferences'),
+
+  updateNotificationPreferences: (preferences: NotificationPreferences) =>
+    request<{ preferences: NotificationPreferences }>('/api/notification-preferences', {
+      method: 'PUT',
+      body: JSON.stringify(preferences)
     }),
 
   // Animes

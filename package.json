@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test:security": "NODE_ENV=test tsx scripts/test-auth-security.ts"
+    "test:security": "NODE_ENV=test tsx scripts/test-auth-security.ts",
+    "test:etapa-b": "NODE_ENV=test tsx scripts/test-etapa-b.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
