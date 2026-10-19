@@ -11,7 +11,8 @@ import {
   Layers, 
   Sparkles,
   Calendar,
-  Film
+  Film,
+  TrendingUp
 } from 'lucide-react';
 
 interface AnimesViewProps {
@@ -22,6 +23,7 @@ interface AnimesViewProps {
   onOpenProfile: (username: string) => void;
   onOpenImageViewer: (images: string[], initialIndex: number) => void;
   onOpenReport: (targetType: 'post' | 'comment', targetId: string) => void;
+  onOpenComments: (post: Post) => void;
   onOpenCreatePostWithAnime: (animeId: string, episodeNum?: number) => void;
 }
 
@@ -33,11 +35,13 @@ export const AnimesView: React.FC<AnimesViewProps> = ({
   onOpenProfile,
   onOpenImageViewer,
   onOpenReport,
+  onOpenComments,
   onOpenCreatePostWithAnime
 }) => {
   const [activeAnime, setActiveAnime] = useState<Anime | null>(null);
   const [discussions, setDiscussions] = useState<Post[]>([]);
   const [selectedEpisode, setSelectedEpisode] = useState<number | 'all'>('all');
+  const [sortBy, setSortBy] = useState<'recent' | 'trending'>('recent');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filterGenre, setFilterGenre] = useState<string>('all');
 
@@ -52,12 +56,12 @@ export const AnimesView: React.FC<AnimesViewProps> = ({
       setActiveAnime(null);
       setDiscussions([]);
     }
-  }, [selectedAnimeId, animes]);
+  }, [selectedAnimeId, animes, sortBy]);
 
   const loadAnimeDiscussions = async (animeId: string) => {
     setIsLoading(true);
     try {
-      const res = await api.getAnime(animeId);
+      const res = await api.getAnime(animeId, sortBy);
       setDiscussions(res.discussions || []);
     } catch (err) {
       console.error(err);
@@ -78,10 +82,10 @@ export const AnimesView: React.FC<AnimesViewProps> = ({
         {/* Back navigation */}
         <button
           onClick={onBackToCatalog}
-          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Voltar ao catálogo de animes</span>
+          <span>Voltar para todas as discussões</span>
         </button>
 
         {/* Anime Showcase Hero Header */}
@@ -193,15 +197,45 @@ export const AnimesView: React.FC<AnimesViewProps> = ({
 
         {/* EPISODE DISCUSSIONS FEED */}
         <div className="space-y-4">
-          <div className="flex items-center justify-between text-xs text-slate-400 border-b border-white/5 pb-2">
-            <span>
-              {selectedEpisode === 'all'
-                ? `Todas as discussões de ${activeAnime.title}`
-                : `Discussões do Episódio ${selectedEpisode}`}
-            </span>
-            <span className="tabular-nums">
-              {filteredDiscussions.length} publicações
-            </span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-400 border-b border-white/5 pb-2">
+            <div>
+              <span>
+                {selectedEpisode === 'all'
+                  ? `Todas as discussões de ${activeAnime.title}`
+                  : `Discussões do Episódio ${selectedEpisode}`}
+              </span>
+              <span className="tabular-nums ml-2 text-slate-500">
+                ({filteredDiscussions.length} publicações)
+              </span>
+            </div>
+
+            {/* Sorting Filter: Recentes vs Em alta */}
+            <div className="flex items-center gap-1.5 p-1 bg-white/5 rounded-xl border border-white/5 w-fit">
+              <span className="text-[11px] text-slate-400 px-2 font-medium">Ordenar:</span>
+              <button
+                onClick={() => setSortBy('recent')}
+                className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+                  sortBy === 'recent'
+                    ? 'bg-white/15 text-white font-semibold shadow-xs'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="Ordenar por data (mais recentes primeiro)"
+              >
+                <span>Recentes</span>
+              </button>
+              <button
+                onClick={() => setSortBy('trending')}
+                className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
+                  sortBy === 'trending'
+                    ? 'bg-amber-500/20 text-amber-300 font-semibold border border-amber-500/40 shadow-xs'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="Ordenar por engajamento de curtidas e respostas"
+              >
+                <TrendingUp className="w-3 h-3 text-amber-400" />
+                <span>Em alta</span>
+              </button>
+            </div>
           </div>
 
           {isLoading ? (
@@ -234,6 +268,7 @@ export const AnimesView: React.FC<AnimesViewProps> = ({
                 onOpenAnime={onSelectAnime}
                 onOpenImageViewer={onOpenImageViewer}
                 onOpenReport={onOpenReport}
+                onOpenComments={onOpenComments}
                 onPostDeleted={postId => setDiscussions(prev => prev.filter(p => p.id !== postId))}
               />
             ))
@@ -253,13 +288,13 @@ export const AnimesView: React.FC<AnimesViewProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
       
-      {/* Catalog Header */}
+      {/* Topics Header */}
       <div className="space-y-2">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white font-display">
-          Comunidades por Anime & Episódio
+          Tópicos de Discussão por Obra
         </h1>
         <p className="text-xs sm:text-sm text-slate-400 max-w-xl">
-          Selecione uma obra para acessar debates episódicos, teorias aprofundadas e análises de cena da comunidade.
+          Acesse discussões e debates organizados pelas obras que a comunidade está acompanhando.
         </p>
 
         {/* Genre filter */}

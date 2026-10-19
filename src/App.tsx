@@ -15,7 +15,8 @@ import { ImageViewerModal } from './components/ImageViewerModal';
 import { ReportModal } from './components/ReportModal';
 import { HikariBridgeModal } from './components/HikariBridgeModal';
 import { AuthModal } from './components/AuthModal';
-import { Anime, Badge, PostCategory } from './types';
+import { CommentsBottomSheet } from './components/CommentsBottomSheet';
+import { Anime, Badge, Post, PostCategory } from './types';
 import { api } from './services/api';
 
 function MainApp() {
@@ -30,11 +31,12 @@ function MainApp() {
   const [animes, setAnimes] = useState<Anime[]>([]);
   const [badges, setBadges] = useState<Badge[]>([]);
 
-  // Modals
+  // Modals & Panels
   const [isCreatePostOpen, setIsCreatePostOpen] = useState<boolean>(false);
   const [createPostCategory, setCreatePostCategory] = useState<PostCategory>('geral');
   const [createPostAnimeId, setCreatePostAnimeId] = useState<string>('');
   const [isHikariBridgeOpen, setIsHikariBridgeOpen] = useState<boolean>(false);
+  const [activeCommentsPost, setActiveCommentsPost] = useState<Post | null>(null);
   
   // Image Viewer
   const [imageViewer, setImageViewer] = useState<{
@@ -116,6 +118,14 @@ function MainApp() {
     });
   };
 
+  const handleOpenComments = (post: Post) => {
+    setActiveCommentsPost(post);
+  };
+
+  const handleCommentCountChange = (postId: string, newCount: number) => {
+    setActiveCommentsPost(prev => prev && prev.id === postId ? { ...prev, commentsCount: newCount } : prev);
+  };
+
   const handleOpenCreatePost = (category: PostCategory = 'geral', animeId: string = '') => {
     setCreatePostCategory(category);
     setCreatePostAnimeId(animeId);
@@ -141,6 +151,7 @@ function MainApp() {
             onOpenAnime={handleOpenAnime}
             onOpenImageViewer={handleOpenImageViewer}
             onOpenReport={handleOpenReport}
+            onOpenComments={handleOpenComments}
             onOpenCreatePost={() => handleOpenCreatePost('geral')}
             onOpenHikariBridge={() => setIsHikariBridgeOpen(true)}
             onSelectTab={handleSelectTab}
@@ -153,10 +164,11 @@ function MainApp() {
             animes={animes}
             selectedAnimeId={selectedAnimeId}
             onSelectAnime={handleOpenAnime}
-            onBackToCatalog={() => setSelectedAnimeId('')}
+            onBackToCatalog={() => handleSelectTab('inicio')}
             onOpenProfile={handleOpenProfile}
             onOpenImageViewer={handleOpenImageViewer}
             onOpenReport={handleOpenReport}
+            onOpenComments={handleOpenComments}
             onOpenCreatePostWithAnime={(animeId, ep) => handleOpenCreatePost('episodio', animeId)}
           />
         )}
@@ -167,6 +179,7 @@ function MainApp() {
             onOpenAnime={handleOpenAnime}
             onOpenImageViewer={handleOpenImageViewer}
             onOpenReport={handleOpenReport}
+            onOpenComments={handleOpenComments}
             onOpenCreatePostWithCategory={cat => handleOpenCreatePost(cat)}
             animes={animes}
           />
@@ -177,6 +190,7 @@ function MainApp() {
             onOpenProfile={handleOpenProfile}
             onOpenImageViewer={handleOpenImageViewer}
             onOpenCreatePostWithCategory={cat => handleOpenCreatePost(cat)}
+            onOpenComments={handleOpenComments}
             animes={animes}
           />
         )}
@@ -199,6 +213,7 @@ function MainApp() {
             onOpenAnime={handleOpenAnime}
             onOpenImageViewer={handleOpenImageViewer}
             onOpenReport={handleOpenReport}
+            onOpenComments={handleOpenComments}
           />
         )}
 
@@ -208,6 +223,7 @@ function MainApp() {
             onOpenAnime={handleOpenAnime}
             onOpenImageViewer={handleOpenImageViewer}
             onOpenReport={handleOpenReport}
+            onOpenComments={handleOpenComments}
             animes={animes}
           />
         )}
@@ -219,6 +235,7 @@ function MainApp() {
             onOpenAnime={handleOpenAnime}
             onOpenImageViewer={handleOpenImageViewer}
             onOpenReport={handleOpenReport}
+            onOpenComments={handleOpenComments}
             allBadges={badges}
           />
         )}
@@ -261,6 +278,14 @@ function MainApp() {
       />
 
       <AuthModal />
+
+      <CommentsBottomSheet
+        isOpen={!!activeCommentsPost}
+        post={activeCommentsPost}
+        onClose={() => setActiveCommentsPost(null)}
+        onOpenProfile={handleOpenProfile}
+        onCommentCountChange={handleCommentCountChange}
+      />
 
     </div>
   );

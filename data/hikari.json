@@ -76,9 +76,7 @@
       ],
       "blockedUsers": [],
       "role": "member",
-      "createdAt": "2026-01-05T12:00:00Z",
-      "resetToken": "NRM4MJP5",
-      "resetTokenExpires": 1792429223876
+      "createdAt": "2026-01-05T12:00:00Z"
     },
     {
       "id": "usr_satoru",

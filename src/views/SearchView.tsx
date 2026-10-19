@@ -18,6 +18,7 @@ interface SearchViewProps {
   onOpenAnime: (animeId: string) => void;
   onOpenImageViewer: (images: string[], initialIndex: number) => void;
   onOpenReport: (targetType: 'post' | 'comment', targetId: string) => void;
+  onOpenComments: (post: Post) => void;
   animes: Anime[];
 }
 
@@ -26,6 +27,7 @@ export const SearchView: React.FC<SearchViewProps> = ({
   onOpenAnime,
   onOpenImageViewer,
   onOpenReport,
+  onOpenComments,
   animes
 }) => {
   const [query, setQuery] = useState<string>('');
@@ -258,6 +260,7 @@ export const SearchView: React.FC<SearchViewProps> = ({
                       onOpenAnime={onOpenAnime}
                       onOpenImageViewer={onOpenImageViewer}
                       onOpenReport={onOpenReport}
+                      onOpenComments={onOpenComments}
                     />
                   ))}
                 </div>

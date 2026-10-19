@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Post, Comment } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
@@ -42,10 +42,19 @@ export const PostCard: React.FC<PostCardProps> = ({
   const [likesCount, setLikesCount] = useState<number>(post.likesCount);
   const [isLiked, setIsLiked] = useState<boolean>(!!post.isLiked);
   const [isBookmarked, setIsBookmarked] = useState<boolean>(!!post.isBookmarked);
+  const [commentsCount, setCommentsCount] = useState<number>(post.commentsCount || 0);
   const [showSpoiler, setShowSpoiler] = useState<boolean>(!post.isSpoiler);
   const [poll, setPoll] = useState(post.poll);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [shareCopied, setShareCopied] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCommentsCount(post.commentsCount || 0);
+    setLikesCount(post.likesCount || 0);
+    setIsLiked(!!post.isLiked);
+    setIsBookmarked(!!post.isBookmarked);
+    setPoll(post.poll);
+  }, [post.commentsCount, post.likesCount, post.isLiked, post.isBookmarked, post.poll]);
 
   const isAuthor = user?.id === post.authorId || user?.role === 'admin';
 
@@ -392,11 +401,11 @@ export const PostCard: React.FC<PostCardProps> = ({
         {/* Comment Button (Opens Bottom Sheet) */}
         <button
           onClick={() => onOpenComments(post)}
-          className="flex items-center gap-1.5 py-1.5 px-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors"
+          className="flex items-center gap-1.5 py-1.5 px-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
           title="Ver comentários"
         >
           <MessageSquare className="w-4 h-4" />
-          <span className="tabular-nums">{post.commentsCount}</span>
+          <span className="tabular-nums">{commentsCount}</span>
         </button>
 
         {/* Bookmark Button */}

@@ -23,7 +23,7 @@ export const AuthModal: React.FC = () => {
   const [resetToken, setResetToken] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [forgotSuccess, setForgotSuccess] = useState<string>('');
-  const [demoCode, setDemoCode] = useState<string>('');
+  const [hasToken, setHasToken] = useState<boolean>(false);
 
   // States
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,6 +33,8 @@ export const AuthModal: React.FC = () => {
   React.useEffect(() => {
     setMode(authModalMode);
     setErrorMsg('');
+    setForgotSuccess('');
+    setHasToken(false);
   }, [authModalMode, authModalOpen]);
 
   if (!authModalOpen) return null;
@@ -69,8 +71,8 @@ export const AuthModal: React.FC = () => {
       return;
     }
 
-    if (regPassword.length < 6) {
-      setErrorMsg('A senha precisa ter pelo menos 6 caracteres.');
+    if (regPassword.length < 8) {
+      setErrorMsg('A senha precisa ter pelo menos 8 caracteres.');
       return;
     }
 
@@ -100,13 +102,10 @@ export const AuthModal: React.FC = () => {
 
     setIsLoading(true);
     setErrorMsg('');
+    setForgotSuccess('');
     try {
       const res = await api.forgotPassword(forgotEmail.trim());
       setForgotSuccess(res.message);
-      if (res.demoToken) {
-        setDemoCode(res.demoToken);
-        setResetToken(res.demoToken);
-      }
     } catch (err: unknown) {
       const error = err as Error;
       setErrorMsg(error.message || 'Erro ao processar recuperação.');
@@ -117,20 +116,28 @@ export const AuthModal: React.FC = () => {
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!resetToken.trim() || !newPassword) {
-      setErrorMsg('Preencha o código e a nova senha.');
+    if (!forgotEmail.trim() || !resetToken.trim() || !newPassword) {
+      setErrorMsg('Preencha seu e-mail, o código de recuperação e a nova senha.');
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setErrorMsg('A nova senha deve ter no mínimo 8 caracteres.');
       return;
     }
 
     setIsLoading(true);
     setErrorMsg('');
     try {
-      await api.resetPassword({
+      const res = await api.resetPassword({
         email: forgotEmail.trim(),
         resetToken: resetToken.trim(),
         newPassword
       });
-      setForgotSuccess('Senha atualizada com sucesso! Agora você já pode entrar.');
+      setForgotSuccess(res.message || 'Senha atualizada com sucesso! Agora você já pode entrar.');
+      setResetToken('');
+      setNewPassword('');
+      setHasToken(false);
       setMode('login');
     } catch (err: unknown) {
       const error = err as Error;
@@ -357,7 +364,7 @@ export const AuthModal: React.FC = () => {
                 </div>
               )}
 
-              {!demoCode ? (
+              {!hasToken ? (
                 <form onSubmit={handleForgotRequest} className="space-y-3">
                   <div>
                     <label className="block text-xs font-medium text-slate-400 mb-1">
@@ -377,32 +384,56 @@ export const AuthModal: React.FC = () => {
                     className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white rounded-lg transition-colors flex items-center justify-center gap-2"
                   >
                     {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                    <span>Solicitar Código de Redefinição</span>
+                    <span>Solicitar Instruções de Redefinição</span>
                   </button>
+
+                  <div className="text-center pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setHasToken(true)}
+                      className="text-[11px] text-indigo-400 hover:text-indigo-300"
+                    >
+                      Já possui um código de redefinição? Clique aqui
+                    </button>
+                  </div>
                 </form>
               ) : (
                 <form onSubmit={handleResetPassword} className="space-y-3">
                   <div>
                     <label className="block text-xs font-medium text-slate-400 mb-1">
-                      Código de Recuperação
+                      E-mail cadastrado
                     </label>
                     <input
-                      type="text"
-                      value={resetToken}
-                      onChange={e => setResetToken(e.target.value)}
-                      className="w-full bg-[#141B2D] border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono uppercase focus:outline-none focus:border-indigo-500"
+                      type="email"
+                      value={forgotEmail}
+                      onChange={e => setForgotEmail(e.target.value)}
+                      placeholder="fern@hikari.community"
+                      className="w-full bg-[#141B2D] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-medium text-slate-400 mb-1">
-                      Nova Senha
+                      Código de Recuperação (Token)
+                    </label>
+                    <input
+                      type="text"
+                      value={resetToken}
+                      onChange={e => setResetToken(e.target.value)}
+                      placeholder="Insira o código recebido"
+                      className="w-full bg-[#141B2D] border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium text-slate-400 mb-1">
+                      Nova Senha (mínimo 8 caracteres)
                     </label>
                     <input
                       type="password"
                       value={newPassword}
                       onChange={e => setNewPassword(e.target.value)}
-                      placeholder="Mínimo 6 caracteres"
+                      placeholder="Mínimo 8 caracteres seguros"
                       className="w-full bg-[#141B2D] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                     />
                   </div>
@@ -415,6 +446,16 @@ export const AuthModal: React.FC = () => {
                     {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                     <span>Atualizar Senha</span>
                   </button>
+
+                  <div className="text-center pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setHasToken(false)}
+                      className="text-[11px] text-slate-400 hover:text-white"
+                    >
+                      ← Voltar para solicitação de e-mail
+                    </button>
+                  </div>
                 </form>
               )}
 

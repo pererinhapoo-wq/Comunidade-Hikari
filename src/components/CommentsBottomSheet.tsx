@@ -104,6 +104,16 @@ export const CommentsBottomSheet: React.FC<CommentsBottomSheetProps> = ({
     };
   }, [isOpen, post?.id]);
 
+  // Keyboard escape key listener
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !post) return null;
 
   // Handle mobile touch gestures for bottom sheet
@@ -116,11 +126,15 @@ export const CommentsBottomSheet: React.FC<CommentsBottomSheetProps> = ({
     const currentY = e.touches[0].clientY;
     const deltaY = currentY - touchStartY.current;
 
-    // If dragged downward significantly while list is at top, close sheet
-    if (deltaY > 75 && (!listRef.current || listRef.current.scrollTop <= 5)) {
+    // Drag down gesture: collapse if expanded, or close if at partial height
+    if (deltaY > 60 && (!listRef.current || listRef.current.scrollTop <= 5)) {
       touchStartY.current = null;
-      onClose();
-    } else if (deltaY < -50 && !isExpanded) {
+      if (isExpanded) {
+        setIsExpanded(false);
+      } else {
+        onClose();
+      }
+    } else if (deltaY < -40 && !isExpanded) {
       // Swiped upward, expand sheet
       setIsExpanded(true);
       touchStartY.current = null;
@@ -255,7 +269,7 @@ export const CommentsBottomSheet: React.FC<CommentsBottomSheetProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/75 backdrop-blur-xs transition-opacity duration-200"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 transition-opacity duration-200"
       onClick={e => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -263,8 +277,8 @@ export const CommentsBottomSheet: React.FC<CommentsBottomSheetProps> = ({
       {/* BOTTOM SHEET / DESKTOP MODAL CONTAINER */}
       <div
         ref={sheetRef}
-        className={`w-full sm:max-w-xl md:max-w-2xl bg-[#0B0F1C] border border-white/10 rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col transition-all duration-300 ease-out overflow-hidden ${
-          isExpanded ? 'h-[92vh] sm:h-[84vh]' : 'h-[62vh] sm:h-[72vh]'
+        className={`w-full sm:max-w-xl md:max-w-2xl bg-[#0B0F1C] border border-white/10 rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col transition-all duration-300 ease-out overflow-hidden animate-in slide-in-from-bottom-4 ${
+          isExpanded ? 'h-[90vh] sm:h-[86vh]' : 'h-[58vh] sm:h-[70vh]'
         }`}
       >
         

@@ -57,7 +57,7 @@ export const api = {
   getCurrentUser: () => request<{ user: UserProfile }>('/api/auth/me'),
 
   forgotPassword: (email: string) =>
-    request<{ message: string; demoToken?: string }>('/api/auth/forgot-password', {
+    request<{ message: string }>('/api/auth/forgot-password', {
       method: 'POST',
       body: JSON.stringify({ email })
     }),
@@ -206,7 +206,11 @@ export const api = {
   // Animes
   getAnimes: () => request<{ animes: Anime[] }>('/api/animes'),
 
-  getAnime: (id: string) => request<{ anime: Anime; discussions: Post[] }>(`/api/animes/${id}`),
+  getAnime: (id: string, sort?: 'recent' | 'trending') => {
+    const url = new URL(`/api/animes/${id}`, window.location.origin);
+    if (sort) url.searchParams.set('sort', sort);
+    return request<{ anime: Anime; discussions: Post[] }>(url.pathname + url.search);
+  },
 
   // Moderation / Reports
   createReport: (payload: {

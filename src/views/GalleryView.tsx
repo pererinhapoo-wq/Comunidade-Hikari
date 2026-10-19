@@ -9,13 +9,16 @@ import {
   Plus, 
   Eye, 
   Sparkles,
-  ExternalLink 
+  ExternalLink,
+  TrendingUp,
+  MessageSquare
 } from 'lucide-react';
 
 interface GalleryViewProps {
   onOpenProfile: (username: string) => void;
   onOpenImageViewer: (images: string[], initialIndex: number) => void;
   onOpenCreatePostWithCategory: (category: 'galeria') => void;
+  onOpenComments?: (post: Post) => void;
   animes: Anime[];
 }
 
@@ -23,11 +26,13 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
   onOpenProfile,
   onOpenImageViewer,
   onOpenCreatePostWithCategory,
+  onOpenComments,
   animes
 }) => {
   const { isAuthenticated, openAuthModal } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [selectedAnimeId, setSelectedAnimeId] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<'recent' | 'trending'>('recent');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const loadGallery = async () => {
@@ -35,12 +40,16 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
     try {
       const res = await api.getPosts({
         category: 'galeria',
-        animeId: selectedAnimeId !== 'all' ? selectedAnimeId : undefined
+        animeId: selectedAnimeId !== 'all' ? selectedAnimeId : undefined,
+        sort: sortBy
       });
       // Also include any posts with images if gallery posts are few
       let allVisualPosts = res.posts.filter(p => p.images && p.images.length > 0);
       if (allVisualPosts.length === 0) {
-        const generalRes = await api.getPosts({ animeId: selectedAnimeId !== 'all' ? selectedAnimeId : undefined });
+        const generalRes = await api.getPosts({ 
+          animeId: selectedAnimeId !== 'all' ? selectedAnimeId : undefined,
+          sort: sortBy
+        });
         allVisualPosts = generalRes.posts.filter(p => p.images && p.images.length > 0);
       }
       setPosts(allVisualPosts);
@@ -53,7 +62,7 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
 
   useEffect(() => {
     loadGallery();
-  }, [selectedAnimeId]);
+  }, [selectedAnimeId, sortBy]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
@@ -85,31 +94,61 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
         </button>
       </div>
 
-      {/* Filter by Anime */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-        <button
-          onClick={() => setSelectedAnimeId('all')}
-          className={`px-3 py-1.5 text-xs rounded-xl whitespace-nowrap transition-colors ${
-            selectedAnimeId === 'all'
-              ? 'bg-indigo-600 text-white font-medium'
-              : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
-          }`}
-        >
-          Todas as Obras
-        </button>
-        {animes.map(a => (
+      {/* Filter by Anime & Sorting Controls */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-3">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
           <button
-            key={a.id}
-            onClick={() => setSelectedAnimeId(a.id)}
+            onClick={() => setSelectedAnimeId('all')}
             className={`px-3 py-1.5 text-xs rounded-xl whitespace-nowrap transition-colors ${
-              selectedAnimeId === a.id
-                ? 'bg-indigo-600 text-white font-medium'
+              selectedAnimeId === 'all'
+                ? 'bg-indigo-600 text-white font-semibold shadow-xs'
                 : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
             }`}
           >
-            {a.title}
+            Todas as Obras
           </button>
-        ))}
+          {animes.map(a => (
+            <button
+              key={a.id}
+              onClick={() => setSelectedAnimeId(a.id)}
+              className={`px-3 py-1.5 text-xs rounded-xl whitespace-nowrap transition-colors ${
+                selectedAnimeId === a.id
+                  ? 'bg-indigo-600 text-white font-semibold shadow-xs'
+                  : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              {a.title}
+            </button>
+          ))}
+        </div>
+
+        {/* Sorting Filter: Recentes vs Em alta */}
+        <div className="flex items-center gap-1.5 p-1 bg-white/5 rounded-xl border border-white/5 w-fit shrink-0 self-start sm:self-auto">
+          <span className="text-[11px] text-slate-400 px-2 font-medium">Ordenar:</span>
+          <button
+            onClick={() => setSortBy('recent')}
+            className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+              sortBy === 'recent'
+                ? 'bg-white/15 text-white font-semibold shadow-xs'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+            title="Ordenar por data de publicação (mais recentes primeiro)"
+          >
+            <span>Recentes</span>
+          </button>
+          <button
+            onClick={() => setSortBy('trending')}
+            className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+              sortBy === 'trending'
+                ? 'bg-amber-500/20 text-amber-300 font-semibold border border-amber-500/40 shadow-xs'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+            title="Ordenar por engajamento real de curtidas e comentários"
+          >
+            <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+            <span>Em alta</span>
+          </button>
+        </div>
       </div>
 
       {/* Grid of Visual Cards */}
@@ -179,9 +218,27 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
                       )}
                     </button>
 
-                    <div className="flex items-center gap-1 text-xs text-rose-400 tabular-nums">
-                      <Heart className="w-3.5 h-3.5 fill-rose-500/50" />
-                      <span>{p.likesCount}</span>
+                    <div className="flex items-center gap-3">
+                      {/* Comments trigger */}
+                      {onOpenComments && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onOpenComments(p);
+                          }}
+                          className="flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
+                          title="Ver comentários"
+                        >
+                          <MessageSquare className="w-3.5 h-3.5" />
+                          <span className="tabular-nums">{p.commentsCount || 0}</span>
+                        </button>
+                      )}
+
+                      {/* Likes count */}
+                      <div className="flex items-center gap-1 text-xs text-rose-400 tabular-nums">
+                        <Heart className="w-3.5 h-3.5 fill-rose-500/50" />
+                        <span>{p.likesCount}</span>
+                      </div>
                     </div>
                   </div>
                 </div>

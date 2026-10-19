@@ -29,6 +29,7 @@ interface ProfileViewProps {
   onOpenAnime: (animeId: string) => void;
   onOpenImageViewer: (images: string[], initialIndex: number) => void;
   onOpenReport: (targetType: 'user' | 'post' | 'comment', targetId: string) => void;
+  onOpenComments: (post: Post) => void;
   allBadges: Badge[];
 }
 
@@ -38,6 +39,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   onOpenAnime,
   onOpenImageViewer,
   onOpenReport,
+  onOpenComments,
   allBadges
 }) => {
   const { user: currentUser, isAuthenticated, openAuthModal, updateProfile, equipBadge } = useAuth();
@@ -367,6 +369,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 onOpenAnime={onOpenAnime}
                 onOpenImageViewer={onOpenImageViewer}
                 onOpenReport={onOpenReport}
+                onOpenComments={onOpenComments}
                 onPostDeleted={postId => setPosts(prev => prev.filter(p => p.id !== postId))}
               />
             ))

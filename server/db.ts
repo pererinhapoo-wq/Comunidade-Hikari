@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import { Badge, Anime, Post, Comment, AppNotification, ReportItem, UserProfile } from '../src/types';
 
@@ -640,10 +641,13 @@ export class Database {
     // Sort order: Trending (real engagement score) or Recent (newest first)
     if (filter?.sort === 'trending') {
       list.sort((a, b) => {
-        const commentsA = this.data.comments.filter(c => c.postId === a.id).length;
-        const commentsB = this.data.comments.filter(c => c.postId === b.id).length;
-        const scoreA = (a.likes.length * 2) + commentsA;
-        const scoreB = (b.likes.length * 2) + commentsB;
+        const commentsA = Math.max(a.commentsCount || 0, this.data.comments.filter(c => c.postId === a.id).length);
+        const commentsB = Math.max(b.commentsCount || 0, this.data.comments.filter(c => c.postId === b.id).length);
+        const likesA = Array.isArray(a.likes) ? a.likes.length : (a.likesCount || 0);
+        const likesB = Array.isArray(b.likes) ? b.likes.length : (b.likesCount || 0);
+        // Engagement score based purely on real interactions: (likes * 2) + comments
+        const scoreA = (likesA * 2) + commentsA;
+        const scoreB = (likesB * 2) + commentsB;
         if (scoreB !== scoreA) {
           return scoreB - scoreA;
         }
@@ -825,8 +829,9 @@ export class Database {
     }
 
     // Create notification
+    const entropy = crypto.randomBytes(4).toString('hex');
     this.createNotification({
-      id: `notif_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      id: `notif_${Date.now()}_${entropy}`,
       recipientId: userId,
       type: 'badge',
       title: 'Emblema Desbloqueado!',

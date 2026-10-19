@@ -10,13 +10,15 @@ interface SavedViewProps {
   onOpenAnime: (animeId: string) => void;
   onOpenImageViewer: (images: string[], initialIndex: number) => void;
   onOpenReport: (targetType: 'post' | 'comment', targetId: string) => void;
+  onOpenComments: (post: Post) => void;
 }
 
 export const SavedView: React.FC<SavedViewProps> = ({
   onOpenProfile,
   onOpenAnime,
   onOpenImageViewer,
-  onOpenReport
+  onOpenReport,
+  onOpenComments
 }) => {
   const { user } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
@@ -80,6 +82,7 @@ export const SavedView: React.FC<SavedViewProps> = ({
               onOpenAnime={onOpenAnime}
               onOpenImageViewer={onOpenImageViewer}
               onOpenReport={onOpenReport}
+              onOpenComments={onOpenComments}
               onPostDeleted={postId => setPosts(prev => prev.filter(p => p.id !== postId))}
             />
           ))}

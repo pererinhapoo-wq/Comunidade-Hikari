@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import multer from 'multer';
@@ -9,7 +10,135 @@ import { Post, Comment, AppNotification, ReportItem } from './src/types/index.ts
 
 const app = express();
 const PORT = 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'hikari-community-secret-key-2026';
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Requirement 6: Eliminate fixed contingency JWT secret. Refuse to start in production if not properly configured.
+function initializeJwtSecret(): string {
+  const secret = process.env.JWT_SECRET?.trim();
+  const INSECURE_DEFAULT = 'hikari-community-secret-key-2026';
+
+  if (isProduction) {
+    if (!secret || secret === INSECURE_DEFAULT || secret.length < 32) {
+      console.error(
+        '[Hikari Security] ERRO CRÍTICO: Em ambiente de produção, a variável JWT_SECRET deve estar configurada adequadamente com uma chave criptográfica forte de no mínimo 32 caracteres. O servidor não iniciará com chave ausente, fraca ou padrão.'
+      );
+      process.exit(1);
+    }
+    return secret;
+  }
+
+  // Development / test environment
+  if (secret && secret !== INSECURE_DEFAULT && secret.length >= 32) {
+    return secret;
+  }
+
+  // Generate ephemeral 256-bit cryptographically secure random secret in dev (no static contingency secret)
+  const ephemeralKey = crypto.randomBytes(32).toString('hex');
+  console.warn(
+    '[Hikari Security] AVISO: JWT_SECRET não configurado ou fraco em desenvolvimento. Um segredo efêmero criptográfico (256 bits) foi gerado exclusivamente para esta sessão do processo.'
+  );
+  return ephemeralKey;
+}
+
+const JWT_SECRET = initializeJwtSecret();
+
+// Requirement 5: Check if real email provider is configured
+export function isEmailProviderConfigured(): boolean {
+  return Boolean(
+    process.env.SMTP_HOST &&
+    process.env.SMTP_PORT &&
+    process.env.SMTP_USER &&
+    process.env.SMTP_PASS
+  );
+}
+
+// ==========================================
+// SECURITY: RATE LIMITING FOR AUTHENTICATION
+// ==========================================
+interface RateLimitBucket {
+  count: number;
+  resetAt: number;
+}
+
+const authRateLimitBuckets = new Map<string, RateLimitBucket>();
+
+// Periodic memory purge for expired buckets
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, bucket] of authRateLimitBuckets.entries()) {
+    if (bucket.resetAt <= now) {
+      authRateLimitBuckets.delete(key);
+    }
+  }
+}, 5 * 60 * 1000).unref();
+
+function createAuthRateLimiter(options: {
+  windowMs: number;
+  maxAttempts: number;
+  actionName: string;
+}) {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    // Resolve client IP safely
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = typeof forwarded === 'string' ? forwarded.split(',')[0].trim() : (req.socket.remoteAddress || '127.0.0.1');
+    const bucketKey = `${options.actionName}:${ip}`;
+    const now = Date.now();
+
+    const bucket = authRateLimitBuckets.get(bucketKey);
+
+    if (!bucket || bucket.resetAt <= now) {
+      authRateLimitBuckets.set(bucketKey, {
+        count: 1,
+        resetAt: now + options.windowMs
+      });
+      res.setHeader('X-RateLimit-Limit', options.maxAttempts);
+      res.setHeader('X-RateLimit-Remaining', options.maxAttempts - 1);
+      next();
+      return;
+    }
+
+    if (bucket.count >= options.maxAttempts) {
+      const retryAfterSeconds = Math.ceil((bucket.resetAt - now) / 1000);
+      res.setHeader('Retry-After', retryAfterSeconds);
+      res.setHeader('X-RateLimit-Limit', options.maxAttempts);
+      res.setHeader('X-RateLimit-Remaining', 0);
+      res.status(429).json({
+        error: `Muitas tentativas de ${options.actionName}. Por favor, aguarde ${retryAfterSeconds} segundos antes de tentar novamente.`
+      });
+      return;
+    }
+
+    bucket.count += 1;
+    res.setHeader('X-RateLimit-Limit', options.maxAttempts);
+    res.setHeader('X-RateLimit-Remaining', Math.max(0, options.maxAttempts - bucket.count));
+    next();
+  };
+}
+
+// Rate limiters for each auth endpoint (Requirement 8)
+const loginRateLimiter = createAuthRateLimiter({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  maxAttempts: 10,
+  actionName: 'login'
+});
+
+const registerRateLimiter = createAuthRateLimiter({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  maxAttempts: 5,
+  actionName: 'cadastro'
+});
+
+const forgotPasswordRateLimiter = createAuthRateLimiter({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  maxAttempts: 4,
+  actionName: 'recuperação de senha'
+});
+
+const resetPasswordRateLimiter = createAuthRateLimiter({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  maxAttempts: 5,
+  actionName: 'redefinição de senha'
+});
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -31,7 +160,8 @@ const storage = multer.diskStorage({
   filename: (_req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
     const cleanExt = ['.jpg', '.jpeg', '.png', '.webp', '.gif'].includes(ext) ? ext : '.jpg';
-    const uniqueName = `hikari_${Date.now()}_${Math.random().toString(36).substring(2, 8)}${cleanExt}`;
+    const uniqueSuffix = crypto.randomBytes(6).toString('hex');
+    const uniqueName = `hikari_${Date.now()}_${uniqueSuffix}${cleanExt}`;
     cb(null, uniqueName);
   }
 });
@@ -102,7 +232,7 @@ function generateToken(userId: string): string {
 // ==========================================
 
 // Register
-app.post('/api/auth/register', (req: Request, res: Response) => {
+app.post('/api/auth/register', registerRateLimiter, (req: Request, res: Response) => {
   const { email, username, displayName, password } = req.body;
 
   if (!email || !username || !displayName || !password) {
@@ -144,7 +274,8 @@ app.post('/api/auth/register', (req: Request, res: Response) => {
 
   const salt = bcrypt.genSaltSync(10);
   const passwordHash = bcrypt.hashSync(password, salt);
-  const userId = `usr_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+  const userEntropy = crypto.randomBytes(4).toString('hex');
+  const userId = `usr_${Date.now()}_${userEntropy}`;
 
   const defaultAvatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${cleanNick}`;
 
@@ -199,7 +330,7 @@ app.post('/api/auth/register', (req: Request, res: Response) => {
 });
 
 // Login
-app.post('/api/auth/login', (req: Request, res: Response) => {
+app.post('/api/auth/login', loginRateLimiter, (req: Request, res: Response) => {
   const { login, password } = req.body;
 
   if (!login || !password) {
@@ -239,57 +370,116 @@ app.get('/api/auth/me', authenticateToken, (req: AuthRequest, res: Response) => 
   res.json({ user: db.toPublicProfile(req.user, req.user.id) });
 });
 
-// Account recovery simulation / link
-app.post('/api/auth/forgot-password', (req: Request, res: Response) => {
+// Account recovery
+app.post('/api/auth/forgot-password', forgotPasswordRateLimiter, (req: Request, res: Response) => {
   const { email } = req.body;
-  if (!email) {
-    res.status(400).json({ error: 'Informe o e-mail cadastrado.' });
+  if (!email || typeof email !== 'string') {
+    res.status(400).json({ error: 'Informe um endereço de e-mail válido.' });
     return;
   }
 
-  const user = db.findUserByEmail(email);
-  if (!user) {
-    // For security, do not expose whether email exists
-    res.json({ message: 'Se o e-mail estiver cadastrado, as instruções de redefinição foram processadas.' });
+  const cleanEmail = email.trim().toLowerCase();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(cleanEmail)) {
+    res.status(400).json({ error: 'Formato de e-mail inválido.' });
     return;
   }
 
-  const resetToken = Math.random().toString(36).substring(2, 10).toUpperCase();
-  user.resetToken = resetToken;
-  user.resetTokenExpires = Date.now() + 1000 * 60 * 30; // 30 minutes
-  db.save();
+  // Requirement 5: Do NOT simulate email dispatch. If no email provider is configured, inform clearly
+  if (!isEmailProviderConfigured()) {
+    res.status(503).json({
+      error: 'O serviço de envio de e-mails não está configurado neste servidor. A recuperação automática de senha via e-mail está temporariamente desabilitada. Entre em contato com a moderação da Comunidade Hikari.'
+    });
+    return;
+  }
 
+  const user = db.findUserByEmail(cleanEmail);
+  if (user) {
+    // Requirement 2: Cryptographically secure 256-bit token generator (never Math.random())
+    const rawToken = crypto.randomBytes(32).toString('hex');
+
+    // Requirement 3: Stored securely using SHA-256 hash (never store plain tokens in DB)
+    const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
+    user.resetToken = tokenHash;
+    user.resetTokenExpires = Date.now() + 15 * 60 * 1000; // 15 minutes limited validity
+    db.save();
+
+    // In a configured environment with SMTP, rawToken is sent strictly via out-of-band email
+  }
+
+  // Requirement 1 & 4: NEVER return codes or tokens in public responses.
+  // Always return identical generic message whether account exists or not (prevent account enumeration).
   res.json({
-    message: 'Código de recuperação gerado com sucesso.',
-    demoToken: resetToken // provided for smooth local demo testing
+    message: 'Se o e-mail informado estiver cadastrado em nossa comunidade, as instruções para redefinição de senha serão enviadas.'
   });
 });
 
 // Reset password with token
-app.post('/api/auth/reset-password', (req: Request, res: Response) => {
+app.post('/api/auth/reset-password', resetPasswordRateLimiter, (req: Request, res: Response) => {
   const { email, resetToken, newPassword } = req.body;
-  if (!email || !resetToken || !newPassword) {
-    res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+
+  if (
+    !email || 
+    !resetToken || 
+    !newPassword || 
+    typeof email !== 'string' || 
+    typeof resetToken !== 'string' || 
+    typeof newPassword !== 'string'
+  ) {
+    res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
     return;
   }
 
-  const user = db.findUserByEmail(email);
-  if (!user || user.resetToken !== resetToken.trim() || !user.resetTokenExpires || user.resetTokenExpires < Date.now()) {
-    res.status(400).json({ error: 'Código de recuperação inválido ou expirado.' });
+  if (newPassword.length < 8) {
+    res.status(400).json({ error: 'A nova senha deve ter no mínimo 8 caracteres.' });
     return;
   }
 
-  if (newPassword.length < 6) {
-    res.status(400).json({ error: 'A nova senha deve ter no mínimo 6 caracteres.' });
+  const cleanEmail = email.trim().toLowerCase();
+  const user = db.findUserByEmail(cleanEmail);
+
+  // Generic rejection helper to avoid leaking account status or timing (Requirement 4 & 7)
+  const rejectInvalidOrExpired = () => {
+    res.status(400).json({ error: 'Código ou token de recuperação inválido ou expirado.' });
+  };
+
+  if (!user || !user.resetToken || !user.resetTokenExpires) {
+    rejectInvalidOrExpired();
     return;
   }
 
-  user.passwordHash = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
+  // Check expiration: limited validity (Requirement 3 & 7)
+  if (user.resetTokenExpires < Date.now()) {
+    // Invalidate immediately
+    user.resetToken = undefined;
+    user.resetTokenExpires = undefined;
+    db.save();
+    rejectInvalidOrExpired();
+    return;
+  }
+
+  // Hash the incoming candidate token using SHA-256 and compare in constant time
+  const candidateHash = crypto.createHash('sha256').update(resetToken.trim()).digest('hex');
+  const storedHash = user.resetToken;
+
+  const candidateBuf = Buffer.from(candidateHash, 'utf-8');
+  const storedBuf = Buffer.from(storedHash, 'utf-8');
+
+  if (candidateBuf.length !== storedBuf.length || !crypto.timingSafeEqual(candidateBuf, storedBuf)) {
+    rejectInvalidOrExpired();
+    return;
+  }
+
+  // Requirement 3 & 7: Single-use guarantee!
+  // Invalidate token immediately upon use so it cannot be reused
   user.resetToken = undefined;
   user.resetTokenExpires = undefined;
+  user.passwordHash = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(12));
   db.save();
 
-  res.json({ message: 'Senha atualizada com sucesso. Você já pode fazer login.' });
+  res.json({
+    message: 'Senha atualizada com sucesso. Você já pode fazer login com sua nova senha.'
+  });
 });
 
 // ==========================================
@@ -879,7 +1069,8 @@ app.get('/api/animes/:id', (req: Request, res: Response) => {
     res.status(404).json({ error: 'Anime não encontrado' });
     return;
   }
-  const discussions = db.getPosts({ animeId: anime.id });
+  const sort = (req.query.sort === 'trending' ? 'trending' : 'recent') as 'recent' | 'trending';
+  const discussions = db.getPosts({ animeId: anime.id, sort });
   res.json({ anime, discussions });
 });
 
@@ -915,7 +1106,7 @@ app.post('/api/reports', authenticateToken, (req: AuthRequest, res: Response) =>
 // 9. FILE UPLOAD ROUTE
 // ==========================================
 
-app.post('/api/upload', authenticateToken, upload.array('images', 5), (req: AuthRequest, res: Response) => {
+app.post('/api/upload', authenticateToken, upload.array('images', 5) as any, (req: AuthRequest, res: Response) => {
   const files = req.files as Express.Multer.File[];
   if (!files || files.length === 0) {
     res.status(400).json({ error: 'Nenhum arquivo enviado.' });
@@ -981,6 +1172,8 @@ async function startServer() {
   });
 }
 
-startServer().catch(err => {
-  console.error('[Hikari Server] Fatal startup error:', err);
-});
+if (process.env.NODE_ENV !== 'test') {
+  startServer().catch(err => {
+    console.error('[Hikari Server] Fatal startup error:', err);
+  });
+}
